@@ -38,30 +38,23 @@ grupoValido(ListaEquipos):-
     length(ListaEquipos, 4),
     condicionPaisesDistintos(ListaEquipos),
     condicionBombosDistintos(ListaEquipos).
-    
 
+generarCandidatos(ListaEquipos) :-
+    findall(Equipo, equipo(Equipo), ListaEquipos).
 
-anadirEquipo(Equipo, GrupoActual, NuevoGrupo) :-
-    length(GrupoActual, LongitudActual),
-    LongitudActual < 4,
-    append(GrupoActual, [Equipo], NuevoGrupo).
+generarGrupo(Grupo) :-
+    generarCandidatos(ListaEquipos),
+    generarGrupo(ListaEquipos, Grupo, 4),
+    grupoValido(Grupo).
 
-generarCandidatos :-
-    findall(Equipo, equipo(Equipo), ListaEquipos),
-    assert(listaEquipos(ListaEquipos)).
-    
-generarGrupo :-
-    generarCandidatos,
-    listaEquipos(ListaEquipos),
+generarGrupo(_ListaEquipos, _Grupo, 0).
+
+generarGrupo(ListaEquipos, [Equipo | RestoGrupo], N) :-
+    N > 0,
     random_member(Equipo, ListaEquipos),
-    anadirEquipo(Equipo, GrupoAnterior, Grupo),
-    length(Grupo, Longitud),
-    Longitud = 4,
-    grupoValido(Grupo),
-    retract(listaEquipos(ListaEquipos)),    
-    delete(ListaEquipos, Equipo, NuevaListaEquipos),
-    assert(listaEquipos(NuevaListaEquipos)),   
-    write('Grupo generado: '), write(Grupo), nl.
+    N1 is N - 1,
+    select(Equipo, ListaEquipos, ListaRestante),
+    generarGrupo(ListaRestante, RestoGrupo, N1).
 
 
 %Bombos
