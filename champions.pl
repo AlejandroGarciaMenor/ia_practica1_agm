@@ -9,7 +9,7 @@
 :- dynamic grupo/1.
 :- dynamic listaCandidatos/1.
 
-:- http_handler(root(sorteo), html_sorteo_grupo_handler, []).
+:- http_handler(root(sorteo), html_sorteo, []).
 
 unicos([]).
 unicos([X | R]):-
@@ -56,6 +56,27 @@ generarGrupo(ListaEquipos, [Equipo | RestoGrupo], N) :-
     select(Equipo, ListaEquipos, ListaRestante),
     generarGrupo(ListaRestante, RestoGrupo, N1).
 
+server(Port) :-					
+    http_server(http_dispatch, [port(Port)]).
+
+html_sorteo(_Request) :-
+    format('Content-type: text/html~n~n'),
+    format('<html><head><title>Sorteo de Champions League</title></head><body><h2>Se ha sorteado aleatoriamente el grupo de Champions League:</h2><p>Puede ser que sea necesario recargar varias veces la página para obtener un nuevo grupo.</p></body></html>~n'),
+    format('<html>~n', []),
+    format('<table border=1>~n'),
+    generarGrupo(ListaEquipos),
+    imprimir_grupo(ListaEquipos),
+    format('~n</table>~n'),
+    format('</html>~n', []).
+    
+imprimir_grupo([]).
+imprimir_grupo([Equipo | EquiposRest]):-
+    format('<tr>'),
+    imprimir_equipo(Equipo),
+    imprimir_grupo(EquiposRest).
+    
+imprimir_equipo(Equipo):-
+    format('<td>~w</td>', [Equipo]).
 
 %Bombos
 bombo(1).
