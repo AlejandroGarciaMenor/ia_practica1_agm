@@ -58,7 +58,7 @@ Generación de un grupo de forma aleatoria visualizado en el navegador web:
 # En el navegador introducir la siguiente dirección: http://localhost:5000/sorteo
 ```
 Se visualizará el siguiente resultado (siempre y cuando se genere un grupo correcto, si no bastará con recargar la página hasta que no devuelva error y aparezca el resultado):
- ![Imagen del sorteo de un grupo visto desde el navegador](Sorteonavegador.jpg)
+ ![Imagen del sorteo de un grupo visto desde el navegador](Sorteonavegador.png)
 
 
 ## Licencia
